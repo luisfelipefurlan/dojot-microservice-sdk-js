@@ -1,4 +1,4 @@
-FROM node:12.18.4-alpine AS base
+FROM node:12.22.0-alpine AS base
 
 WORKDIR /opt/example
 
@@ -27,7 +27,7 @@ COPY examples/serviceStateManager/package*.json ./
 
 RUN npm install
 
-FROM node:12.18.4-alpine
+FROM node:12.22.0-alpine
 
 WORKDIR /opt/example
 
