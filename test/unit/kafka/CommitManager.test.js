@@ -1,4 +1,4 @@
-const CommitManager = require('../../../lib/kafka/CommitManager.js');
+const CommitManager = require('../../../lib/kafka/CommitManager');
 
 // mocking dependencies
 jest.mock('logging/Logger.js');
@@ -13,7 +13,10 @@ test('Basic initialization', async () => {
   jest.runOnlyPendingTimers();
 
   expect(commitManager.caller).not.toBeNull();
-  expect(setInterval).toHaveBeenCalledWith(expect.any(Function), commitInterval);
+  expect(setInterval).toHaveBeenCalledWith(
+    expect.any(Function),
+    commitInterval,
+  );
 });
 
 test('notifyFinishedProcessing test', () => {
@@ -39,7 +42,10 @@ test('Initialization with a preconfigured caller', async () => {
 
   expect(commitManager.caller).not.toBeNull();
   expect(setInterval).toHaveBeenCalledWith(expect.any(Function), fakeInterval);
-  expect(setInterval).toHaveBeenCalledWith(expect.any(Function), commitInterval);
+  expect(setInterval).toHaveBeenCalledWith(
+    expect.any(Function),
+    commitInterval,
+  );
   expect(clearInterval).toHaveBeenCalledTimes(1);
 });
 
@@ -82,7 +88,9 @@ test('start processing', async () => {
   commitManager.notifyStartProcessing(data);
 
   expect(commitManager.topics).toHaveProperty(data.topic);
-  expect(commitManager.topics[data.topic]).toHaveProperty(data.partition.toString());
+  expect(commitManager.topics[data.topic]).toHaveProperty(
+    data.partition.toString(),
+  );
   expect(commitManager.topics[data.topic][data.partition]).toHaveLength(1);
   expect(commitManager.topics[data.topic][data.partition][0]).toStrictEqual({
     offset: data.offset,
@@ -160,9 +168,7 @@ test('consolidates the processed messages', async () => {
       ],
     },
     'tenant/acme': {
-      10: [
-        { offset: 30, done: true },
-      ],
+      10: [{ offset: 30, done: true }],
     },
     'tenant/umbrella': {
       3: [
@@ -194,9 +200,7 @@ test('consolidates the processed messages', async () => {
 
   expect(commitManager.topics).toStrictEqual({
     'tenant/dojot': {
-      1: [
-        { offset: 1002, done: false },
-      ],
+      1: [{ offset: 1002, done: false }],
     },
     'tenant/umbrella': {
       3: [

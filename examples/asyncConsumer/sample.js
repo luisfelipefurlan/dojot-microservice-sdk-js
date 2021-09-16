@@ -1,5 +1,5 @@
 const util = require('util');
-const { Logger, Kafka: { Consumer } } = require('../index.js');
+const { Logger, Kafka: { Consumer } } = require('../../index');
 
 
 // Set the global logger properties

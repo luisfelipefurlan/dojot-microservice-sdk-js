@@ -1,6 +1,9 @@
 const util = require('util');
 
-const { Logger, Kafka: { Producer } } = require('../index.js');
+const {
+  Logger,
+  Kafka: { Producer },
+} = require('../../index');
 
 // Set the global logger properties
 // Console transport is set by default, but with info level
@@ -31,18 +34,24 @@ const logger = new Logger('sample-producer');
     },
   };
 
-
   logger.debug('Producer will be connected.');
   await producer.connect();
   logger.debug('Producer is connected.');
 
-  producer.getStatus().then((value) => {
-    logger.info(`Status: ${util.inspect(value)}`);
-  }).catch((err) => {
-    logger.error(`${err}`);
-  });
+  producer
+    .getStatus()
+    .then((value) => {
+      logger.info(`Status: ${util.inspect(value)}`);
+    })
+    .catch((err) => {
+      logger.error(`${err}`);
+    });
 
-  logger.debug(`Producer will send a message: ${util.inspect(message, { depth: null })} in topic ${targetTopic}`);
+  logger.debug(
+    `Producer will send a message: ${util.inspect(message, {
+      depth: null,
+    })} in topic ${targetTopic}`,
+  );
   await producer.produce(targetTopic, JSON.stringify(message));
   logger.debug('Successfully produced the message.');
 
@@ -50,11 +59,14 @@ const logger = new Logger('sample-producer');
   await producer.disconnect();
   logger.debug('Producer is disconnected');
 
-  producer.getStatus().then((value) => {
-    logger.info(`Status: ${util.inspect(value)}`);
-  }).catch((err) => {
-    logger.error(`${err}`);
-  });
+  producer
+    .getStatus()
+    .then((value) => {
+      logger.info(`Status: ${util.inspect(value)}`);
+    })
+    .catch((err) => {
+      logger.error(`${err}`);
+    });
 })().catch((error) => {
   logger.error(`Caught an error: ${error.stack || error}`);
 });
